@@ -21,7 +21,7 @@ export { QQ_MAP_KEY, GEOCODER_URL, HEFENG_BASE_URL, HEFENG_KEY }
 
 - 简约美观
 - 自动定位，支持地图上直接挑选位置
-- 当前天气信息
+- 当前天气信息，空气质量等
 - 后几个小时天气预报
 - 7 天内天气图表显示
 - 生活指数推荐
