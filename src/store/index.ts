@@ -1,4 +1,7 @@
-import AddressStore, { IAddressStore } from './addressStore'
+import LocationStore, { ILocationStore } from './locationStore'
 import WeatherStore, { IWeatherStore } from './weatherStore'
 
-export { AddressStore, IAddressStore, WeatherStore, IWeatherStore }
+const locationStore = new LocationStore()
+const weatherStore = new WeatherStore()
+
+export { locationStore, ILocationStore, weatherStore, IWeatherStore }

@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { Provider } from '@tarojs/mobx'
 import '@tarojs/async-await'
 import Weather from './pages/weather'
-import { AddressStore, WeatherStore } from './store'
+import { locationStore, weatherStore } from './store'
 
 import './app.less'
 import './assets/fonts/font_1279133_zcf4btattbf/iconfont.css'
@@ -14,8 +14,8 @@ import './assets/fonts/font_1279133_zcf4btattbf/iconfont.css'
 // }
 
 const store = {
-  addressStore: new AddressStore(),
-  weatherStore: new WeatherStore()
+  locationStore,
+  weatherStore
 }
 
 class App extends Component {

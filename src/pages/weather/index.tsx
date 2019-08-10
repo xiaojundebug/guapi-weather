@@ -3,21 +3,20 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, CoverView, Text, ScrollView, Image } from '@tarojs/components'
 import { observer, inject } from '@tarojs/mobx'
 import { observable } from 'mobx'
-import { IAddressStore, IWeatherStore } from '../../store'
+import { ILocationStore, IWeatherStore } from '../../store'
 import WeatherIcon from '../../components/weather-icon'
-import { QQ_MAP_KEY, GEOCODER_URL, HEFENG_BASE_URL, HEFENG_KEY } from '../../const'
-import { dateFormat, array2object, getBackgroundByCode, getDayOfWeek } from '../../utils'
+import { dateFormat, getBackgroundByCode, getDayOfWeek } from '../../utils'
 
 import './index.less'
 
 let last_update_time: number | null = null
 
 interface IProps {
-  addressStore: IAddressStore
+  locationStore: ILocationStore
   weatherStore: IWeatherStore
 }
 
-@inject('addressStore', 'weatherStore')
+@inject('locationStore', 'weatherStore')
 @observer
 class Weather extends Component<IProps, {}> {
   /**
@@ -44,7 +43,7 @@ class Weather extends Component<IProps, {}> {
     Taro.getSystemInfo().then(res => {
       this.paddingTop = res.statusBarHeight + 12
     })
-    this.getAddress().then(() => {
+    this.props.locationStore.syncLocation().then(() => {
       this.fetchData()
     })
   }
@@ -56,7 +55,13 @@ class Weather extends Component<IProps, {}> {
   componentDidHide() {}
   // 数据请求入口
   fetchData = () => {
-    const { getNow, getAir, getHourly, getDailyForecast, getLifestyle } = this
+    const {
+      syncNow,
+      syncAir,
+      syncHourly,
+      syncDailyForecast,
+      syncLifestyle
+    } = this.props.weatherStore
 
     const curTime = new Date().getTime()
     // 限制10s请求一次
@@ -76,7 +81,7 @@ class Weather extends Component<IProps, {}> {
       mask: true
     })
 
-    return Promise.all([getNow(), getAir(), getHourly(), getDailyForecast(), getLifestyle()])
+    return Promise.all([syncNow(), syncAir(), syncHourly(), syncDailyForecast(), syncLifestyle()])
       .then(() => {
         this.initChart()
         Taro.hideLoading()
@@ -86,146 +91,13 @@ class Weather extends Component<IProps, {}> {
       })
   }
   /**
-   * 获取地址
-   */
-  getAddress = () => {
-    return new Promise((resolve, reject) => {
-      Taro.getLocation({ type: 'gcj02' })
-        // 拿到当前坐标
-        .then(
-          res => {
-            return Taro.request({
-              url: GEOCODER_URL,
-              data: {
-                location: res.latitude + ',' + res.longitude,
-                key: QQ_MAP_KEY
-              }
-            })
-          },
-          () => {
-            Taro.showToast({
-              title: '检测到您未授权使用位置权限，请先开启哦',
-              icon: 'none',
-              duration: 3000
-            })
-            reject()
-          }
-        )
-        // 根据坐标拿到地址
-        .then(({ data }: any) => {
-          if (data.status !== 0) {
-            Taro.showToast({
-              title: data.message,
-              icon: 'none',
-              duration: 3000
-            })
-            return reject()
-          }
-
-          this.props.addressStore.setAddress(data.result.address)
-          this.props.addressStore.setLocation({
-            latitude: data.result.location.lat,
-            longitude: data.result.location.lng
-          })
-          resolve()
-        })
-    })
-  }
-  /**
-   * 实况天气
-   */
-  getNow = () => {
-    const {
-      addressStore: { location }
-    } = this.props
-    return Taro.request({
-      url: HEFENG_BASE_URL + 'weather/now',
-      data: {
-        location: location.latitude + ',' + location.longitude,
-        key: HEFENG_KEY
-      }
-    }).then(res => {
-      const now = res.data.HeWeather6[0].now
-      this.props.weatherStore.setNow(now)
-    })
-  }
-  /**
-   * 当前天气质量
-   */
-  getAir = () => {
-    return Taro.request({
-      url: HEFENG_BASE_URL + 'air/now',
-      data: {
-        location: 'auto_ip',
-        key: HEFENG_KEY
-      }
-    }).then(res => {
-      const air = res.data.HeWeather6[0].air_now_city
-      this.props.weatherStore.setAir(air)
-    })
-  }
-  /**
-   * 时段天气
-   */
-  getHourly = () => {
-    const {
-      addressStore: { location }
-    } = this.props
-    return Taro.request({
-      url: HEFENG_BASE_URL + 'weather/hourly',
-      data: {
-        location: location.latitude + ',' + location.longitude,
-        key: HEFENG_KEY
-      }
-    }).then(res => {
-      const hourly = res.data.HeWeather6[0].hourly
-      this.props.weatherStore.setHourly(hourly)
-    })
-  }
-  /**
-   * 未来几天预报
-   */
-  getDailyForecast = () => {
-    const {
-      addressStore: { location }
-    } = this.props
-    return Taro.request({
-      url: HEFENG_BASE_URL + 'weather/forecast',
-      data: {
-        location: location.latitude + ',' + location.longitude,
-        key: HEFENG_KEY
-      }
-    }).then(res => {
-      const daily_forecast = res.data.HeWeather6[0].daily_forecast
-      this.props.weatherStore.setDailyForecast(daily_forecast)
-    })
-  }
-  /**
-   * 生活指数
-   */
-  getLifestyle = () => {
-    const {
-      addressStore: { location }
-    } = this.props
-    return Taro.request({
-      url: HEFENG_BASE_URL + 'weather/lifestyle',
-      data: {
-        location: location.latitude + ',' + location.longitude,
-        key: HEFENG_KEY
-      }
-    }).then(res => {
-      const lifestyle = res.data.HeWeather6[0].lifestyle
-      this.props.weatherStore.setLifestyle(array2object(lifestyle, 'type'))
-    })
-  }
-  /**
    * 选择地址
    */
   chooseLocation = () => {
     Taro.chooseLocation().then(res => {
-      const { addressStore } = this.props
-      addressStore.setAddress(res.address)
-      addressStore.setLocation({ latitude: res.latitude, longitude: res.longitude })
+      const { locationStore } = this.props
+      locationStore.setAddress(res.address)
+      locationStore.setLocation({ latitude: res.latitude, longitude: res.longitude })
       this.fetchData()
     })
   }
@@ -339,7 +211,7 @@ class Weather extends Component<IProps, {}> {
   render() {
     const { paddingTop, chooseLocation, onChartInit } = this
     const {
-      addressStore: { address },
+      locationStore: { address },
       weatherStore: { now, today, daily_forecast, hourly, air, lifestyle }
     } = this.props
 
