@@ -1,6 +1,16 @@
 import { observable, action } from 'mobx'
 
-class addressStore {
+export interface IAddressStore {
+  address: string
+  location: {
+    latitude: number
+    longitude: number
+  }
+  setAddress: (val: any) => void
+  setLocation: (val: any) => void
+}
+
+class AddressStore implements IAddressStore {
   @observable address = '北京' // 地址
   @observable location = {
     latitude: 30.25961, // 纬度
@@ -18,4 +28,4 @@ class addressStore {
   }
 }
 
-export default new addressStore()
+export default AddressStore

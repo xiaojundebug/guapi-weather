@@ -4,7 +4,7 @@
   <img src="./screenshot/gh_3cc3c3064657_430.jpg" width="175">
 </p>
 
-瓜皮天气微信小程序，基于 taro + ts + mobx 开发，天气背景素材用 sketch 临摹自 https://dribbble.com/shots/3802809-Weather-A, 侵权联系必删。
+瓜皮天气微信小程序，个人初学小程序练手所写，基于 taro + ts + mobx 开发，天气背景素材用 sketch 临摹自 https://dribbble.com/shots/3802809-Weather-A, 侵权联系必删。
 为了保护个人隐私，有个配置文件未上传，请自行申请对应开发者账号，并按照以下格式新增 `src/const.ts`
 
 ```typescript

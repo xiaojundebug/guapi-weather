@@ -1,6 +1,21 @@
 import { observable, computed, action } from 'mobx'
 
-class weatherStore {
+export interface IWeatherStore {
+  now: any
+  daily_forecast: any
+  hourly: any
+  air: any
+  lifestyle: any
+  today: any
+  tomorrow: any
+  setNow: (val: any) => void
+  setDailyForecast: (val: any) => void
+  setHourly: (val: any) => void
+  setAir: (val: any) => void
+  setLifestyle: (val: any) => void
+}
+
+class weatherStore implements IWeatherStore {
   @observable now = {} // 当前天气
   @observable daily_forecast = [] // 一周天气
   @observable hourly = [] // 时段天气
@@ -41,4 +56,4 @@ class weatherStore {
   }
 }
 
-export default new weatherStore()
+export default weatherStore

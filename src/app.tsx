@@ -2,9 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { Provider } from '@tarojs/mobx'
 import '@tarojs/async-await'
 import Weather from './pages/weather'
-
-import addressStore from './store/address'
-import weatherStore from './store/weather'
+import { AddressStore, WeatherStore } from './store'
 
 import './app.less'
 import './assets/fonts/font_1279133_zcf4btattbf/iconfont.css'
@@ -16,8 +14,8 @@ import './assets/fonts/font_1279133_zcf4btattbf/iconfont.css'
 // }
 
 const store = {
-  addressStore,
-  weatherStore
+  addressStore: new AddressStore(),
+  weatherStore: new WeatherStore()
 }
 
 class App extends Component {
@@ -31,12 +29,8 @@ class App extends Component {
   config: Config = {
     pages: ['pages/weather/index'],
     window: {
-      // backgroundTextStyle: 'light',
-      // navigationBarBackgroundColor: '#00b26a',
-      navigationBarTitleText: 'WeChat',
-      // navigationBarTextStyle: 'white',
+      navigationBarTitleText: '瓜皮天气',
       navigationStyle: 'custom'
-      // backgroundColor: '#d8d8d8'
     },
     permission: {
       'scope.userLocation': {

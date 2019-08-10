@@ -3,16 +3,16 @@ import { Image, View } from '@tarojs/components'
 
 import './index.less'
 
-type Props = {
+interface IProps {
   cond_code: string | number
 }
 
-class Index extends Component<Props> {
+class Index extends Component<IProps> {
   static options = {
     addGlobalClass: true
   }
 
-  static defaultProps: Props = {
+  static defaultProps: IProps = {
     cond_code: '999'
   }
 

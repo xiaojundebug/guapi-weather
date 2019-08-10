@@ -20,7 +20,7 @@ function dateFormat(date: any, fmt: string = 'yyyy-MM-dd hh:mm:ss') {
   return fmt
 }
 
-function array2Object(arr, key) {
+function array2object(arr, key) {
   const result = {}
   arr.forEach(el => {
     result[el[key]] = el
@@ -269,4 +269,4 @@ function aqi2level(aqi: number | string) {
     return 6
   }
 }
-export { dateFormat, array2Object, getBackgroundByCode, getDayOfWeek, aqi2level }
+export { dateFormat, array2object, getBackgroundByCode, getDayOfWeek, aqi2level }

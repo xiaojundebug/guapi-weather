@@ -1,44 +1,25 @@
 import React, { ComponentType } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, CoverView, Text, ScrollView, Image } from '@tarojs/components'
-import WeatherIcon from '../../components/weather-icon'
 import { observer, inject } from '@tarojs/mobx'
 import { observable } from 'mobx'
+import { IAddressStore, IWeatherStore } from '../../store'
+import WeatherIcon from '../../components/weather-icon'
 import { QQ_MAP_KEY, GEOCODER_URL, HEFENG_BASE_URL, HEFENG_KEY } from '../../const'
-import { dateFormat, array2Object, getBackgroundByCode, getDayOfWeek } from '../../utils'
+import { dateFormat, array2object, getBackgroundByCode, getDayOfWeek } from '../../utils'
 
 import './index.less'
 
 let last_update_time: number | null = null
 
-interface Weather {
-  props: {
-    addressStore: {
-      address: string
-      setAddress: Function
-      location: { latitude: number; longitude: number }
-      setLocation: Function
-    }
-    weatherStore: {
-      now: any
-      today: any
-      tomorrow: any
-      hourly: any
-      daily_forecast: any
-      air: any
-      lifestyle: any
-      setNow: Function
-      setDailyForecast: Function
-      setHourly: Function
-      setAir: Function
-      setLifestyle: Function
-    }
-  }
+interface IProps {
+  addressStore: IAddressStore
+  weatherStore: IWeatherStore
 }
 
 @inject('addressStore', 'weatherStore')
 @observer
-class Weather extends Component {
+class Weather extends Component<IProps, {}> {
   /**
    * 指定config的类型声明为: Taro.Config
    *
@@ -47,7 +28,6 @@ class Weather extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: 'Weather',
     enablePullDownRefresh: true,
     usingComponents: {
       'ff-canvas': '../../lib/f2-canvas/f2-canvas'
@@ -76,7 +56,7 @@ class Weather extends Component {
   componentDidHide() {}
   // 数据请求入口
   fetchData = () => {
-    const { getWeatherNow, getAir, getWeatherHourly, getWeatherForecast, getLifestyle } = this
+    const { getNow, getAir, getHourly, getDailyForecast, getLifestyle } = this
 
     const curTime = new Date().getTime()
     // 限制10s请求一次
@@ -96,13 +76,7 @@ class Weather extends Component {
       mask: true
     })
 
-    return Promise.all([
-      getWeatherNow(),
-      getAir(),
-      getWeatherHourly(),
-      getWeatherForecast(),
-      getLifestyle()
-    ])
+    return Promise.all([getNow(), getAir(), getHourly(), getDailyForecast(), getLifestyle()])
       .then(() => {
         this.initChart()
         Taro.hideLoading()
@@ -148,10 +122,8 @@ class Weather extends Component {
             return reject()
           }
 
-          const { addressStore } = this.props
-          // addressStore.setAddress(data.result.address_component.district)
-          addressStore.setAddress(data.result.address)
-          addressStore.setLocation({
+          this.props.addressStore.setAddress(data.result.address)
+          this.props.addressStore.setLocation({
             latitude: data.result.location.lat,
             longitude: data.result.location.lng
           })
@@ -162,7 +134,7 @@ class Weather extends Component {
   /**
    * 实况天气
    */
-  getWeatherNow = () => {
+  getNow = () => {
     const {
       addressStore: { location }
     } = this.props
@@ -195,7 +167,7 @@ class Weather extends Component {
   /**
    * 时段天气
    */
-  getWeatherHourly = () => {
+  getHourly = () => {
     const {
       addressStore: { location }
     } = this.props
@@ -213,7 +185,7 @@ class Weather extends Component {
   /**
    * 未来几天预报
    */
-  getWeatherForecast = () => {
+  getDailyForecast = () => {
     const {
       addressStore: { location }
     } = this.props
@@ -243,7 +215,7 @@ class Weather extends Component {
       }
     }).then(res => {
       const lifestyle = res.data.HeWeather6[0].lifestyle
-      this.props.weatherStore.setLifestyle(array2Object(lifestyle, 'type'))
+      this.props.weatherStore.setLifestyle(array2object(lifestyle, 'type'))
     })
   }
   /**
@@ -357,7 +329,7 @@ class Weather extends Component {
   /**
    * 分享
    */
-  onShareAppMessage(res) {
+  onShareAppMessage() {
     return {
       title: '我发现一个好看的天气小程序，分享给你看看',
       path: '/pages/weather/index'
