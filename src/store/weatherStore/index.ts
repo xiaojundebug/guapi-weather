@@ -24,7 +24,7 @@ export interface IWeatherStore {
   setLifestyle: (val: any) => void
 }
 
-class weatherStore implements IWeatherStore {
+class WeatherStore implements IWeatherStore {
   @observable now = {} // 当前天气
   @observable air = {} // 空气质量
   @observable hourly = [] // 时段天气
@@ -139,4 +139,4 @@ class weatherStore implements IWeatherStore {
   }
 }
 
-export default weatherStore
+export default new WeatherStore()

@@ -1,4 +1,4 @@
-import React, { ComponentType } from 'react'
+import { ComponentType } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, CoverView, Text, ScrollView, Image } from '@tarojs/components'
 import { observer, inject } from '@tarojs/mobx'
@@ -35,10 +35,6 @@ class Weather extends Component<IProps, {}> {
   @observable paddingTop: number = 0
   chartDetail: any = {}
 
-  componentWillMount() {}
-
-  componentWillReact() {}
-
   componentDidMount() {
     Taro.getSystemInfo().then(res => {
       this.paddingTop = res.statusBarHeight + 12
@@ -47,12 +43,6 @@ class Weather extends Component<IProps, {}> {
       this.fetchData()
     })
   }
-
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
   // 数据请求入口
   fetchData = () => {
     const {

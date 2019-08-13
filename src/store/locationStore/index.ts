@@ -76,4 +76,4 @@ class LocationStore implements ILocationStore {
   }
 }
 
-export default LocationStore
+export default new LocationStore()
