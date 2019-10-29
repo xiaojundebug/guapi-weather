@@ -1,2 +1,2 @@
-export { default as locationStore, ILocationStore } from './locationStore'
-export { default as weatherStore, IWeatherStore } from './weatherStore'
+export { default as locationStore } from './locationStore'
+export { default as weatherStore } from './weatherStore'

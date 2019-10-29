@@ -1,8 +1,9 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { Provider } from '@tarojs/mobx'
 import '@tarojs/async-await'
-import Weather from './pages/weather'
+import { Provider } from '@tarojs/mobx'
 import { locationStore, weatherStore } from './store'
+import Weather from './pages/Weather'
+import './common/Promise.prototype.finally'
 
 import './app.less'
 import './assets/fonts/font_1279133_zcf4btattbf/iconfont.css'
@@ -27,9 +28,10 @@ class App extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    pages: ['pages/weather/index'],
+    pages: ['pages/Weather/index'],
     window: {
       navigationBarTitleText: '瓜皮天气',
+      navigationBarTextStyle: 'black',
       navigationStyle: 'custom'
     },
     permission: {

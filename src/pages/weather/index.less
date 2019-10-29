@@ -10,159 +10,165 @@
 
 @border-color: rgba(0, 0, 0, 0.15);
 
-.wrapper {
+.container {
   position: relative;
   overflow: hidden;
-  color: #4a4a4a;
+  background-repeat: no-repeat;
   background-position: top right;
   background-size: 80% auto;
-  background-repeat: no-repeat;
-  .container {
-    .location {
-      .flex-row();
-      justify-content: center;
-      color: #666;
-      .icon {
-        font-size: 38px;
-      }
-      .address {
-        display: inline-block;
-        max-width: 30%;
-        font-size: 30px;
-      }
+  color: #4a4a4a;
+
+  .location {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 30%;
+    color: #666;
+    .icon {
+      font-size: 38px;
     }
-    .now {
-      .flex-row();
+    .address {
+      display: inline-block;
+      font-size: 30px;
+    }
+  }
+
+  .now {
+    .flex-row();
+    align-items: center;
+    justify-content: center;
+    margin-top: 280px;
+    .curr-tmp {
+      font-size: 200px;
+      font-weight: 100;
+    }
+    .weather {
+      .flex-column();
       align-items: center;
-      justify-content: center;
-      margin-top: 280px;
-      .curr-tmp {
-        font-size: 200px;
-        font-weight: 100;
+      justify-content: space-between;
+      height: 140px;
+      font-weight: 300;
+      .cond_txt {
+        font-size: 52px;
       }
-      .weather {
-        .flex-column();
-        align-items: center;
-        justify-content: space-between;
-        height: 140px;
-        font-weight: 300;
-        .cond_txt {
-          font-size: 52px;
-        }
-        .tmp-range {
-          font-size: 36px;
-        }
+      .tmp-range {
+        font-size: 36px;
       }
     }
-    .detail {
-      .flex-row();
-      justify-content: center;
-      .block {
-        position: relative;
-        width: 30%;
-        text-align: center;
-        font-size: 32px;
-        font-weight: 200;
-        &::after {
-          content: '';
-          position: absolute;
-          right: 0;
-          top: 25%;
-          width: 2px;
-          height: 50%;
-          background-color: @border-color;
-        }
-        &:last-child::after {
-          display: none;
-        }
-      }
-    }
-    .hourly {
-      margin-top: 50px;
-      .content {
-        display: flex;
-        padding: 25px 0;
-        .item {
-          .flex-column();
-          text-align: center;
-          flex-grow: 1;
-          padding: 0 45px;
-          Text {
-            font-size: 28px;
-          }
-        }
-      }
-      canvas {
-        height: 180px;
-      }
-    }
-    .week {
+  }
+
+  .detail {
+    .flex-row();
+    justify-content: center;
+    .block {
       position: relative;
-      border-top: 1px solid @border-color;
-      .top,
-      .bottom {
-        display: flex;
-        padding: 25px 0;
-        .item {
-          .flex-column();
-          text-align: center;
-          flex: 1;
-          Text {
-            font-size: 28px;
-          }
-        }
-      }
-      canvas {
-        height: 250px;
-      }
-      .mask {
+      width: 30%;
+      text-align: center;
+      font-size: 32px;
+      font-weight: 200;
+      &::after {
+        content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        right: 0;
+        top: 25%;
+        width: 2px;
+        height: 50%;
+        background-color: @border-color;
+      }
+      &:last-child::after {
+        display: none;
       }
     }
-    .bottom-text {
-      display: block;
-      width: 220px;
-      height: 20px;
-      margin: 50px auto;
-    }
-    .lifestyle {
-      border-top: 1px solid @border-color;
-      border-bottom: 1px solid @border-color;
+  }
+
+  .hourly {
+    margin-top: 50px;
+    .content {
+      display: flex;
+      padding: 25px 0;
       .item {
-        position: relative;
-        display: table;
-        width: 100%;
-        &:not(:first-child) {
-          border-top: 1px solid @border-color;
+        .flex-column();
+        text-align: center;
+        flex-grow: 1;
+        padding: 0 45px;
+        Text {
+          font-size: 28px;
         }
-        .icon {
-          display: table-cell;
-          width: 150px;
-          vertical-align: middle;
-          text-align: center;
-          font-size: 56px;
+      }
+    }
+    canvas {
+      height: 180px;
+    }
+  }
+
+  .week {
+    position: relative;
+    border-top: 1px solid @border-color;
+    .top,
+    .bottom {
+      display: flex;
+      padding: 25px 0;
+      .item {
+        .flex-column();
+        text-align: center;
+        flex: 1;
+        Text {
+          font-size: 28px;
         }
-        .text-content {
-          padding: 25px 0;
-          Text {
-            font-size: 28px;
-            &:nth-of-type(1) {
-            }
-            &:nth-of-type(2) {
-              display: block;
-              margin-top: 10px;
-              padding-right: 25px;
-              font-size: 24px;
-              text-align: justify;
-              color: #888;
-            }
+      }
+    }
+    canvas {
+      height: 250px;
+    }
+    .mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .lifestyle {
+    border-top: 1px solid @border-color;
+    border-bottom: 1px solid @border-color;
+    .item {
+      position: relative;
+      display: table;
+      width: 100%;
+      &:not(:first-child) {
+        border-top: 1px solid @border-color;
+      }
+      .icon {
+        display: table-cell;
+        width: 150px;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 56px;
+      }
+      .text-content {
+        padding: 25px 0;
+        Text {
+          font-size: 28px;
+          &:nth-of-type(1) {
+          }
+          &:nth-of-type(2) {
+            display: block;
+            margin-top: 10px;
+            padding-right: 25px;
+            font-size: 24px;
+            text-align: justify;
+            color: #888;
           }
         }
       }
     }
+  }
+
+  .bottom-text {
+    display: block;
+    width: 220px;
+    height: 20px;
+    margin: 50px auto;
   }
 }

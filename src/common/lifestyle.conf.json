@@ -1,0 +1,10 @@
+[
+  { "title": "舒适度指数", "type": "comf", "icon": "icon-1153" },
+  { "title": "穿衣指数", "type": "drsg", "icon": "icon-yifu" },
+  { "title": "感冒指数", "type": "flu", "icon": "icon-ganmaozhishu" },
+  { "title": "运动指数", "type": "sport", "icon": "icon-paobu" },
+  { "title": "旅游指数", "type": "trav", "icon": "icon-lvyou" },
+  { "title": "紫外线指数", "type": "uv", "icon": "icon-ziwaixian" },
+  { "title": "洗车", "type": "cw", "icon": "icon-che" },
+  { "title": "空气污染扩散条件指数", "type": "air", "icon": "icon-wuranyuan" }
+]

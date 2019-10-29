@@ -1,16 +1,16 @@
-function dateFormat(date: any, fmt: string = 'yyyy-MM-dd hh:mm:ss') {
-  date = new Date(('' + date).replace(/-/g, '/'))
+function dateFormat(date: string, fmt: string = 'yyyy-MM-dd hh:mm:ss') {
+  const d = new Date(date.replace(/-/g, '/'))
   var o = {
-    'M+': date.getMonth() + 1,
-    'd+': date.getDate(),
-    'h+': date.getHours(),
-    'm+': date.getMinutes(),
-    's+': date.getSeconds(),
-    'q+': Math.floor((date.getMonth() + 3) / 3),
-    S: date.getMilliseconds()
+    'M+': d.getMonth() + 1,
+    'd+': d.getDate(),
+    'h+': d.getHours(),
+    'm+': d.getMinutes(),
+    's+': d.getSeconds(),
+    'q+': Math.floor((d.getMonth() + 3) / 3),
+    S: d.getMilliseconds()
   }
   if (/(y+)/.test(fmt))
-    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+    fmt = fmt.replace(RegExp.$1, (d.getFullYear() + '').substr(4 - RegExp.$1.length))
   for (var k in o)
     if (new RegExp('(' + k + ')').test(fmt))
       fmt = fmt.replace(
@@ -20,15 +20,16 @@ function dateFormat(date: any, fmt: string = 'yyyy-MM-dd hh:mm:ss') {
   return fmt
 }
 
-function array2object(arr, key) {
+function array2object<T extends object, K extends keyof T>(arr: T[], key: K) {
   const result = {}
   arr.forEach(el => {
-    result[el[key]] = el
+    result[el[key] as any] = el
     delete el[key]
   })
   return result
 }
-// 根据天气获取背景图
+
+// 根据天气 code 设置背景图
 function getBackgroundByCode(cond_code: number | string) {
   cond_code = Number(cond_code)
   let url = ''
@@ -243,11 +244,13 @@ function getBackgroundByCode(cond_code: number | string) {
   }
   return url
 }
+
 // 计算某天是星期几
 function getDayOfWeek(date: string | Date) {
   return ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][new Date(date).getDay()]
 }
-// aqi转为空气质量级别
+
+// aqi 转为空气质量级别
 function aqi2level(aqi: number | string) {
   if (aqi <= 50) {
     // 优
@@ -269,4 +272,5 @@ function aqi2level(aqi: number | string) {
     return 6
   }
 }
+
 export { dateFormat, array2object, getBackgroundByCode, getDayOfWeek, aqi2level }

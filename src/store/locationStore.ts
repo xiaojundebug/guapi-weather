@@ -1,26 +1,14 @@
 import { observable, action } from 'mobx'
-import Taro from '@tarojs/taro'
-import { GEOCODER_URL, QQ_MAP_KEY } from '../../const'
+import Taro, { createContext } from '@tarojs/taro'
+import { GEOCODER_URL, QQ_MAP_KEY } from '../common/const'
 
-export interface ILocationStore {
-  address: string
-  location: {
-    latitude: number
-    longitude: number
-  }
-  syncLocation: () => Promise<any>
-  setAddress: (val: any) => void
-  setLocation: (val: any) => void
-}
-
-class LocationStore implements ILocationStore {
-  @observable address = '北京' // 地址
-  @observable location = {
+class LocationStore {
+  @observable address: any = '北京' // 地址
+  @observable location: any = {
     latitude: 30.25961, // 纬度
     longitude: 120.13026 // 经度
   }
 
-  @action
   syncLocation = () => {
     return new Promise((resolve, reject) => {
       Taro.getLocation({ type: 'gcj02' })
@@ -36,11 +24,7 @@ class LocationStore implements ILocationStore {
             })
           },
           () => {
-            Taro.showToast({
-              title: '检测到您未授权使用位置权限，请先开启哦',
-              icon: 'none',
-              duration: 3000
-            })
+            Taro.showToast({ title: '检测到您未授权使用位置权限，请先开启哦', icon: 'none' })
             reject()
           }
         )
@@ -76,4 +60,4 @@ class LocationStore implements ILocationStore {
   }
 }
 
-export default new LocationStore()
+export default createContext(new LocationStore())
