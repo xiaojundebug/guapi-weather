@@ -8,7 +8,7 @@ interface IProps {
 
 const WeacherIcon: Taro.FC<IProps> = props => {
   return (
-    <View className="icon">
+    <View className='icon'>
       <Image src={`https://cdn.heweather.com/cond_icon/${props.cond_code}.png`} />
     </View>
   )

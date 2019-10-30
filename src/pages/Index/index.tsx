@@ -22,7 +22,7 @@ const locationBarStyle = {
   height: `${menuRect.height}px`
 }
 
-const Weather: Taro.FC = props => {
+const Weather: Taro.FC = () => {
   const {
     now,
     today,
@@ -55,6 +55,7 @@ const Weather: Taro.FC = props => {
 
   useEffect(() => {
     syncLocation().then(fetchData)
+    // eslint-disable-next-line
   }, [])
 
   useLayoutEffect(() => {
@@ -162,110 +163,109 @@ const Weather: Taro.FC = props => {
       setLocation({ latitude: res.latitude, longitude: res.longitude })
       fetchData()
     })
+    // eslint-disable-next-line
   }, [])
 
   return (
     <View
-      className="container"
-      style={{ backgroundImage: 'url(' + getBackgroundByCode(now.cond_code) + ')' }}
+      className='container'
+      style={{ backgroundImage: `url(${getBackgroundByCode(now.cond_code)})` }}
     >
-      <View className="container">
-        <View className="location" style={locationBarStyle} onClick={chooseLocation}>
-          <Text className="icon icon-location" />
-          <Text className="address ellipsis">{address}</Text>
-        </View>
-
-        <View className="now">
-          <View className="curr-tmp">
-            <Text>{now.tmp || 'N/A'}°</Text>
-          </View>
-          <View className="weather">
-            <Text className="cond_txt">{now.cond_txt || '未知'}</Text>
-            <Text className="tmp-range">
-              {today.tmp_min || 'N/A'} ~ {today.tmp_max || 'N/A'}°
-            </Text>
-          </View>
-        </View>
-
-        <View className="detail">
-          <View className="block">
-            <View className="value">{air.qlty || '未知'}</View>
-            <View className="label">空气</View>
-          </View>
-          <View className="block">
-            <View className="value">{now.hum ? now.hum + '%' : '未知'}</View>
-            <View className="label">湿度</View>
-          </View>
-          <View className="block">
-            <View className="value">
-              {now.wind_dir ? `${now.wind_dir} ${now.wind_sc}级` : '未知'}
-            </View>
-            <View className="label">风向</View>
-          </View>
-        </View>
-
-        {/* 时段 */}
-        <ScrollView className="hourly" scrollX>
-          <View className="content">
-            {hourly.map(el => {
-              return (
-                <View className="item" key={el.date}>
-                  <Text>{dateFormat(el.time, 'hh:mm')}</Text>
-                  <WeatherIcon cond_code={el.cond_code} />
-                  <Text>{el.cond_txt}</Text>
-                </View>
-              )
-            })}
-          </View>
-        </ScrollView>
-
-        {/* 七天内 */}
-        <View className="week">
-          <View className="top">
-            {daily_forecast.map(el => {
-              return (
-                <View className="item" key={el.date}>
-                  <Text>{getDayOfWeek(el.date)}</Text>
-                  <WeatherIcon cond_code={el.cond_code_d} />
-                  <Text>{el.cond_txt_d}</Text>
-                </View>
-              )
-            })}
-          </View>
-          <ff-canvas canvas-id="line-chart" onInit={({ detail }) => (chartDetail = detail)} />
-          <View className="bottom">
-            {daily_forecast.map(el => {
-              return (
-                <View className="item" key={el.date}>
-                  <WeatherIcon cond_code={el.cond_code_n} />
-                  <Text>{el.cond_txt_n}</Text>
-                  {/* <Text>{el.wind_dir}</Text> */}
-                </View>
-              )
-            })}
-          </View>
-          {/* 由于图表会阻碍滑动，这里放个View覆盖一下 */}
-          <CoverView className="mask" />
-        </View>
-
-        {/* 生活指数 */}
-        <View className="lifestyle">
-          {lifestyleConf.map(el => (
-            <View className="item" key={el.type}>
-              <Text className={`icon ${el.icon}`} />
-              <View className="text-content">
-                <Text>
-                  {el.title} {lifestyle[el.type].brf}
-                </Text>
-                <Text>{lifestyle[el.type].txt}</Text>
-              </View>
-            </View>
-          ))}
-        </View>
-
-        {/* 底部小文本 */}
-        <Image className="bottom-text" src="https://s2.ax1x.com/2019/07/31/etMkhF.png" />
+      <View className='location' style={locationBarStyle} onClick={chooseLocation}>
+        <Text className='icon icon-location' />
+        <Text className='address ellipsis'>{address}</Text>
       </View>
+
+      <View className='now'>
+        <View className='curr-tmp'>
+          <Text>{now.tmp || 'N/A'}°</Text>
+        </View>
+        <View className='weather'>
+          <Text className='cond_txt'>{now.cond_txt || '未知'}</Text>
+          <Text className='tmp-range'>
+            {today.tmp_min || 'N/A'} ~ {today.tmp_max || 'N/A'}°
+          </Text>
+        </View>
+      </View>
+
+      <View className='detail'>
+        <View className='block'>
+          <View className='value'>{air.qlty || '未知'}</View>
+          <View className='label'>空气</View>
+        </View>
+        <View className='block'>
+          <View className='value'>{now.hum ? now.hum + '%' : '未知'}</View>
+          <View className='label'>湿度</View>
+        </View>
+        <View className='block'>
+          <View className='value'>
+            {now.wind_dir ? `${now.wind_dir} ${now.wind_sc}级` : '未知'}
+          </View>
+          <View className='label'>风向</View>
+        </View>
+      </View>
+
+      {/* 时段 */}
+      <ScrollView className='hourly' scrollX>
+        <View className='content'>
+          {hourly.map(el => {
+            return (
+              <View className='item' key={el.date}>
+                <Text>{dateFormat(el.time, 'hh:mm')}</Text>
+                <WeatherIcon cond_code={el.cond_code} />
+                <Text>{el.cond_txt}</Text>
+              </View>
+            )
+          })}
+        </View>
+      </ScrollView>
+
+      {/* 七天内 */}
+      <View className='week'>
+        <View className='top'>
+          {daily_forecast.map(el => {
+            return (
+              <View className='item' key={el.date}>
+                <Text>{getDayOfWeek(el.date)}</Text>
+                <WeatherIcon cond_code={el.cond_code_d} />
+                <Text>{el.cond_txt_d}</Text>
+              </View>
+            )
+          })}
+        </View>
+        <ff-canvas canvas-id='line-chart' onInit={({ detail }) => (chartDetail = detail)} />
+        <View className='bottom'>
+          {daily_forecast.map(el => {
+            return (
+              <View className='item' key={el.date}>
+                <WeatherIcon cond_code={el.cond_code_n} />
+                <Text>{el.cond_txt_n}</Text>
+                {/* <Text>{el.wind_dir}</Text> */}
+              </View>
+            )
+          })}
+        </View>
+        {/* 由于图表会阻碍滑动，这里放个View覆盖一下 */}
+        <CoverView className='mask' />
+      </View>
+
+      {/* 生活指数 */}
+      <View className='lifestyle'>
+        {lifestyleConf.map(el => (
+          <View className='item' key={el.type}>
+            <Text className={`icon ${el.icon}`} />
+            <View className='text-content'>
+              <Text>
+                {el.title} {lifestyle[el.type].brf}
+              </Text>
+              <Text>{lifestyle[el.type].txt}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+
+      {/* 底部小文本 */}
+      <Image className='footer' src={require('../../assets/images/footer.png')} />
     </View>
   )
 }
@@ -274,6 +274,8 @@ Weather.config = {
   usingComponents: {
     'ff-canvas': '../../lib/f2-canvas/f2-canvas'
   },
+  navigationStyle: 'custom',
+  navigationBarTextStyle: 'black',
   enablePullDownRefresh: true
 }
 

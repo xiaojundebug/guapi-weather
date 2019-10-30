@@ -13,7 +13,7 @@ declare namespace JSX {
     interface IntrinsicElements {
         'import': React.DetailedHTMLProps<React.EmbedHTMLAttributes<HTMLEmbedElement>, HTMLEmbedElement>,
         'ff-canvas': any
-      }
+    }
 }
 
 // @ts-ignore

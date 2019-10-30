@@ -1,6 +1,6 @@
 const config = {
-  projectName: 'learn-taro',
-  date: '2019-6-26',
+  projectName: 'myApp',
+  date: '2019-10-30',
   designWidth: 750,
   deviceRatio: {
     '640': 2.34 / 2,
@@ -13,12 +13,9 @@ const config = {
     babel: {
       sourceMap: true,
       presets: [
-        [
-          'env',
-          {
-            modules: false
-          }
-        ]
+        ['env', {
+          modules: false
+        }]
       ],
       plugins: [
         'transform-decorators-legacy',
@@ -28,11 +25,12 @@ const config = {
     }
   },
   defineConstants: {
-    LOCATION_APIKEY: 'AIABZ-XH333-IA533-3724G-BIKC6-M2FUG'
   },
   copy: {
-    patterns: [],
-    options: {}
+    patterns: [
+    ],
+    options: {
+    }
   },
   weapp: {
     module: {
@@ -40,17 +38,23 @@ const config = {
         autoprefixer: {
           enable: true,
           config: {
-            browsers: ['last 3 versions', 'Android >= 4.1', 'ios >= 8']
+            browsers: [
+              'last 3 versions',
+              'Android >= 4.1',
+              'ios >= 8'
+            ]
           }
         },
         pxtransform: {
           enable: true,
-          config: {}
+          config: {
+
+          }
         },
         url: {
           enable: true,
           config: {
-            limit: 20480 // 设定转换尺寸上限
+            limit: 10240 // 设定转换尺寸上限
           }
         },
         cssModules: {
@@ -71,7 +75,11 @@ const config = {
         autoprefixer: {
           enable: true,
           config: {
-            browsers: ['last 3 versions', 'Android >= 4.1', 'ios >= 8']
+            browsers: [
+              'last 3 versions',
+              'Android >= 4.1',
+              'ios >= 8'
+            ]
           }
         },
         cssModules: {
@@ -86,7 +94,7 @@ const config = {
   }
 }
 
-module.exports = function(merge) {
+module.exports = function (merge) {
   if (process.env.NODE_ENV === 'development') {
     return merge({}, config, require('./dev'))
   }
